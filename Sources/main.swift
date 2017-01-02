@@ -15,6 +15,7 @@ import Na4lapyCore
 HeliumLogger.use()
 
 var dbconfig = DBConfig()
+var animalBackend: Model
 
 if let dbuser = getenv("N4L_API_DATABASE_USER") {
     dbconfig.user = String(cString: dbuser)
@@ -22,8 +23,18 @@ if let dbuser = getenv("N4L_API_DATABASE_USER") {
 if let dbpass = getenv("N4L_API_DATABASE_PASS") {
     dbconfig.password = String(cString: dbpass)
 }
+if let oldapi = getenv("N4L_OLDAPI_IMAGES_URL") {
+    dbconfig.oldapiUrl = String(cString: oldapi)
+}
+
 let db = DBLayer(config: dbconfig)
-let animalBackend = AnimalBackend(db: db)
+
+if let oldapi = getenv("N4L_OLDAPI_IMAGES_URL") {
+    Log.info("Uruchomienie w trybie OLD_API, url: \(dbconfig.oldapiUrl)")
+    animalBackend = AnimalBackend_oldapi(db: db)
+} else {
+    animalBackend = AnimalBackend(db: db)
+}
 let animalController = Controller(backend: animalBackend)
 
 let mainRouter = Router()
