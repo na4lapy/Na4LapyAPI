@@ -17,6 +17,7 @@ HeliumLogger.use()
 var dbconfig = DBConfig()
 var animalBackend: Model
 let defaultListenPort = 8123
+let defaultImagesPath = "/Users/scoot/images/"
 var listenPort: Int = defaultListenPort
 
 if let dbuser = getenv("N4L_API_DATABASE_USER") {
@@ -41,6 +42,7 @@ if let oldapi = getenv("N4L_OLDAPI_IMAGES_URL") {
     animalBackend = AnimalBackend(db: db)
 }
 let animalController = Controller(backend: animalBackend)
+let filesController = FilesController(path: defaultImagesPath)
 
 let mainRouter = Router()
 mainRouter.get("/") {
@@ -49,7 +51,7 @@ mainRouter.get("/") {
 }
 
 mainRouter.all("animals", middleware: animalController.router)
-//mainRouter.all("shelter", middleware: shelter)
+mainRouter.all("files", middleware: filesController.router)
 
 
 //  an HTTP server and connect it to the router
