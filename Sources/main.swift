@@ -16,6 +16,8 @@ HeliumLogger.use()
 
 var dbconfig = DBConfig()
 var animalBackend: Model
+let defaultListenPort = 8123
+var listenPort: Int = defaultListenPort
 
 if let dbuser = getenv("N4L_API_DATABASE_USER") {
     dbconfig.user = String(cString: dbuser)
@@ -25,6 +27,9 @@ if let dbpass = getenv("N4L_API_DATABASE_PASS") {
 }
 if let oldapi = getenv("N4L_OLDAPI_IMAGES_URL") {
     dbconfig.oldapiUrl = String(cString: oldapi)
+}
+if let apiport = getenv("N4L_API_LISTEN_PORT") {
+    listenPort = String(cString: apiport).int ?? defaultListenPort
 }
 
 let db = DBLayer(config: dbconfig)
@@ -48,7 +53,7 @@ mainRouter.all("animals", middleware: animalController.router)
 
 
 //  an HTTP server and connect it to the router
-Kitura.addHTTPServer(onPort: 8123, with: mainRouter)
+Kitura.addHTTPServer(onPort: listenPort, with: mainRouter)
 
 // Start the Kitura runloop (this call never returns)
 Kitura.run()
