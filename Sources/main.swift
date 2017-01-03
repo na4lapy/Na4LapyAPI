@@ -17,9 +17,12 @@ HeliumLogger.use()
 var dbconfig = DBConfig()
 var animalBackend: Model
 let defaultListenPort = 8123
-let defaultImagesPath = "/Users/scoot/images/"
+var defaultImagesPath = "/Users/scoot/images/"
 var listenPort: Int = defaultListenPort
 
+if let imagesPath = getenv("N4L_API_IMAGES_PATH") {
+    defaultImagesPath = String(cString: imagesPath)
+}
 if let dbuser = getenv("N4L_API_DATABASE_USER") {
     dbconfig.user = String(cString: dbuser)
 }
