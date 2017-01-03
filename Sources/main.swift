@@ -22,6 +22,7 @@ var listenPort: Int = defaultListenPort
 
 if let imagesPath = getenv("N4L_API_IMAGES_PATH") {
     defaultImagesPath = String(cString: imagesPath)
+    Log.info("Ścieżka do zdjęć: \(defaultImagesPath)")
 }
 if let dbuser = getenv("N4L_API_DATABASE_USER") {
     dbconfig.user = String(cString: dbuser)
