@@ -1,0 +1,15 @@
+# Stop dance for na4lapyapi
+# =======================
+#
+[Unit]
+Description=Na4lapy API Swift
+After=network.target postgresql.service
+
+[Service]
+Type=forking
+PIDFile=/tmp/na4lapyapiswift.pid
+User=na4lapy
+ExecStart=/opt/na4lapy-api-swift/Na4lapyAPI/na4lapyapiswift.sh
+ExecStop=-/sbin/start-stop-daemon --quiet --stop --remove-pidfile --pidfile /tmp/na4lapyapiswift.pid
+[Install]
+WantedBy=multi-user.target
