@@ -45,8 +45,10 @@ if let oldapi = getenv("N4L_OLDAPI_IMAGES_URL") {
 } else {
     animalBackend = AnimalBackend(db: db)
 }
+
 let animalController = Controller(backend: animalBackend)
 let filesController = FilesController(path: defaultImagesPath)
+let loginController = LoginController()
 
 let mainRouter = Router()
 mainRouter.get("/") {
@@ -56,6 +58,7 @@ mainRouter.get("/") {
 
 mainRouter.all("animals", middleware: animalController.router)
 mainRouter.all("files", middleware: filesController.router)
+mainRouter.all("login", middleware: loginController.router)
 
 
 //  an HTTP server and connect it to the router
