@@ -20,6 +20,8 @@ let defaultListenPort = 8123
 var defaultImagesPath = "/Users/scoot/images/"
 var listenPort: Int = defaultListenPort
 
+// FIXME: ścieżki powinny być zakończone znakiem slash
+//
 if let imagesPath = getenv("N4L_API_IMAGES_PATH") {
     defaultImagesPath = String(cString: imagesPath)
     Log.info("Ścieżka do zdjęć: \(defaultImagesPath)")
@@ -45,9 +47,10 @@ if let oldapi = getenv("N4L_OLDAPI_IMAGES_URL") {
 } else {
     animalBackend = AnimalBackend(db: db)
 }
+let photoBackend = PhotoBackend(db: db)
 
 let animalController = Controller(backend: animalBackend)
-let filesController = FilesController(path: defaultImagesPath)
+let filesController = FilesController(path: defaultImagesPath, backend: photoBackend)
 let loginController = LoginController()
 
 let mainRouter = Router()
