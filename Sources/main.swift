@@ -11,6 +11,8 @@ import HeliumLogger
 import LoggerAPI
 import Foundation
 import Na4lapyCore
+import KituraCORS
+
 
 HeliumLogger.use()
 
@@ -19,6 +21,11 @@ var animalBackend: Model
 let defaultListenPort = 8123
 var defaultImagesPath = "/Users/scoot/images/"
 var listenPort: Int = defaultListenPort
+
+// CORS
+//
+let options = Options(allowedOrigin: .origin("*"), methods: ["GET","PUT"], allowedHeaders: ["Content-Type"], maxAge: 5)
+let cors = CORS(options: options)
 
 // FIXME: ścieżki powinny być zakończone znakiem slash
 //
@@ -62,7 +69,7 @@ mainRouter.get("/") {
 mainRouter.all("animals", middleware: animalController.router)
 mainRouter.all("files", middleware: filesController.router)
 mainRouter.all("login", middleware: loginController.router)
-
+mainRouter.all("login", middleware: cors)
 
 //  an HTTP server and connect it to the router
 Kitura.addHTTPServer(onPort: listenPort, with: mainRouter)
