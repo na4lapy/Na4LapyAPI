@@ -24,7 +24,7 @@ var listenPort: Int = defaultListenPort
 
 // CORS
 //
-let options = Options(allowedOrigin: .all, credentials: true, methods: ["GET","PUT"], allowedHeaders: ["Content-Type", "X-AUTH-TOKEN"], maxAge: 5, preflightContinue: true)
+let options = Options(allowedOrigin: .all, credentials: true, methods: ["GET","PUT"], allowedHeaders: ["Content-Type", "X-AUTH-TOKEN"], maxAge: 5)
 let cors = CORS(options: options)
 
 // FIXME: ścieżki powinny być zakończone znakiem slash
@@ -66,10 +66,13 @@ mainRouter.get("/") {
     next()
 }
 
+mainRouter.all("login", middleware: cors)
+mainRouter.all("animals", middleware: cors)
+mainRouter.all("files", middleware: cors)
+
 mainRouter.all("animals", middleware: animalController.router)
 mainRouter.all("files", middleware: filesController.router)
 mainRouter.all("login", middleware: loginController.router)
-mainRouter.all("login", middleware: cors)
 
 //  an HTTP server and connect it to the router
 Kitura.addHTTPServer(onPort: listenPort, with: mainRouter)
