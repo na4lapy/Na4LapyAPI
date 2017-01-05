@@ -24,7 +24,7 @@ var listenPort: Int = defaultListenPort
 
 // CORS
 //
-let options = Options(allowedOrigin: .origin("*"), methods: ["GET","PUT"], allowedHeaders: ["Content-Type"], maxAge: 5)
+let options = Options(allowedOrigin: .origin("*"), methods: ["GET","PUT"], allowedHeaders: ["Content-Type", "X-AUTH-TOKEN"], maxAge: 5)
 let cors = CORS(options: options)
 
 // FIXME: ścieżki powinny być zakończone znakiem slash
