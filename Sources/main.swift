@@ -68,6 +68,7 @@ mainRouter.get("/") {
 }
 
 mainRouter.all("login", middleware: cors)
+mainRouter.all("logout", middleware: cors)
 mainRouter.all("animals", middleware: cors)
 mainRouter.all("files", middleware: cors)
 
