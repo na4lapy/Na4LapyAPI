@@ -31,7 +31,7 @@ lrwxr-xr-x  1 root  wheel  54 27 gru 13:48 /usr/local/include -> /Users/YOUR_LOG
 ### Pobierz repozytorium
 
 ```shell
-$ git clone https://github.com/scootpl/Na4lapyAPI.git
+$ git clone https://github.com/na4lapy/na4lapy-api
 ```
 
 ### Zbuduj projekt dla XCode
