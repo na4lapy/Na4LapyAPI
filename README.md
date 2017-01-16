@@ -37,7 +37,7 @@ $ git clone https://github.com/na4lapy/na4lapy-api
 ### Zbuduj projekt dla XCode
 
 ```shell
-$ cd Na4lapyAPI
+$ cd na4lapy-api
 $ swift package generate-xcodeproj
 ```
 
@@ -78,7 +78,7 @@ struct DBDefault {
 ### Kompilacja:
 
 ```shell
-$ cd na4lapy-api-swift
+$ cd na4lapy-api
 $ swift build
 ```
 
