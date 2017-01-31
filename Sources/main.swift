@@ -12,15 +12,19 @@ import LoggerAPI
 import Foundation
 import Na4lapyCore
 import KituraCORS
-
+import KituraSession
 
 HeliumLogger.use()
 
 var dbconfig = DBConfig()
 var animalBackend: Model
 let defaultListenPort = 8123
-var defaultImagesPath = "/Users/scoot/images/"
+var defaultImagesPath = ""
 var listenPort: Int = defaultListenPort
+
+// Session
+//
+let session = Session(secret: UUID().uuidString)
 
 // CORS
 //
@@ -58,7 +62,7 @@ let photoBackend = PhotoBackend(db: db)
 
 let animalController = Controller(backend: animalBackend)
 let filesController = FilesController(path: defaultImagesPath, backend: photoBackend)
-let loginController = LoginController()
+let loginController = LoginController(db: db)
 let logoutController = LogoutController()
 
 let mainRouter = Router()
@@ -66,6 +70,11 @@ mainRouter.get("/") {
     request, response, next in
     next()
 }
+
+mainRouter.all("login", middleware: session)
+mainRouter.all("logout", middleware: session)
+mainRouter.all("animals", middleware: session)
+mainRouter.all("files", middleware: session)
 
 mainRouter.all("login", middleware: cors)
 mainRouter.all("logout", middleware: cors)
