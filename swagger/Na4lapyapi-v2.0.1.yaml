@@ -1,0 +1,193 @@
+swagger: '2.0'
+host: api.na4lapy.org
+
+info:
+  version: "2.0.1"
+  title: <NA4Łapy API>
+
+paths:
+  /files/removeall/{animalId}:
+    delete:
+      description: Usunięcie wszystkich zdjęć dla wybranego zwierzaka
+      parameters:
+        -
+          name: animalId
+          in: path
+          description: id zwierzaka
+          required: true
+          type: string
+      responses:
+        200:
+          description: Wszystko OK
+          schema:
+            title: Animal
+            type: object
+            properties:
+              name:
+                type: string
+              single:
+                type: boolean
+          
+  /files/{id}:
+    delete:
+      description: Usunięcie zdjęcia o zadanym id
+      parameters:
+        -
+          name: id
+          in: path
+          description: id zdjęcia
+          required: true
+          type: string
+      responses:
+        200:
+          description: Wszystko OK
+          schema:
+            title: Animal
+            type: object
+            properties:
+              name:
+                type: string
+              single:
+                type: boolean
+
+    get:
+      description: Pobranie zdjęcia o zadanym id (które występuje w obiekcie Animal jako filename
+      parameters:
+        -
+          name: id
+          in: path
+          description: Nazwa zdjęcia (pobierana z API)
+          required: true
+          type: string
+      responses:
+        200:
+          description: Wszystko OK
+          schema:
+            title: Animal
+            type: object
+            properties:
+              name:
+                type: string
+              single:
+                type: boolean
+          
+  /files/{id}?profil={profil}:
+    patch:
+      description: Modyfikacja zdjęcia profilowego
+      parameters:
+        -
+          name: id 
+          in: path
+          description: id modyfikowanego zdjęcia
+          required: true
+          type: string
+        -
+          name: profil
+          in: path
+          description: oznaczenie zdjęcia jako profilowe true/false
+          required: true
+          type: boolean
+      responses:
+        200:
+          description: Wszystko OK
+          schema:
+            title: Animal
+            type: object
+            properties:
+              name:
+                type: string
+              single:
+                type: boolean
+
+  /files/upload/{filename}?animalId={animalId}&profil={profil}:
+    post:
+      description: Przesłanie zdjęcia zwierzaka
+      parameters:
+        -
+          name: filename
+          in: path
+          description: nazwa pliku (pomijana później)
+          required: true
+          type: string
+        -
+          name: animalId
+          in: path
+          description: id zwierzaka do którego zostanie dodane zdjęcie
+          required: true
+          type: string
+        -
+          name: profil
+          in: path
+          description: oznaczenie zdjęcia jako profilowe true/false
+          required: true
+          type: boolean
+      responses:
+        200:
+          description: Wszystko OK
+          schema:
+            title: Animal
+            type: object
+            properties:
+              name:
+                type: string
+              single:
+                type: boolean
+                
+  /animals/{id}:
+    get:
+      description: Pobranie obiektu typu `Animal` o zadanym `id`
+      parameters:
+        -
+          name: id
+          in: path
+          description: id obiektu
+          required: true
+          type: number
+          format: int
+      responses:
+        200:
+          description: Wszystko OK
+          schema:
+            title: Animal
+            type: object
+            properties:
+              name:
+                type: string
+              single:
+                type: boolean
+      
+  /animals:
+    get:
+      description: |
+        Pobranie wszystkich obiektów typu `Animal`
+        Opcjonalnie można użyć parametrów `page` oraz `size` w celu stronicowania wyniku.
+      parameters:
+        -
+          name: size
+          in: query
+          description: rozmiar strony
+          required: false
+          type: number
+          format: int
+        -
+          name: page
+          in: query
+          description: numer strony do pobrania (numerując od 0)
+          required: false
+          type: number
+          format: int
+      responses:
+        200:
+          description: Wszystko OK
+          schema:
+            title: ArrayOfAnimals
+            type: array
+            items:
+              title: Animal
+              type: object
+              properties:
+                name:
+                  type: string
+                single:
+                  type: boolean
+  
