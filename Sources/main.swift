@@ -28,7 +28,7 @@ let session = Session(secret: UUID().uuidString)
 
 // CORS
 //
-let options = Options(allowedOrigin: .all, credentials: true, methods: ["GET","PUT", "PATCH", "DELETE"], allowedHeaders: ["Content-Type", "kitura-session-id"], maxAge: 5)
+let options = Options(allowedOrigin: .origin("panel.na4lapy.org"), credentials: true, methods: ["GET","PUT", "PATCH", "DELETE"], allowedHeaders: ["Content-Type", "kitura-session-id"], maxAge: 5)
 let cors = CORS(options: options)
 
 // FIXME: ścieżki powinny być zakończone znakiem slash
