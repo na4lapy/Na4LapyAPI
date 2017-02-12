@@ -2,7 +2,7 @@ swagger: '2.0'
 host: api.na4lapy.org
 
 info:
-  version: "2.0.1"
+  version: "2.0.2"
   title: <NA4Łapy API>
 
 paths:
@@ -18,16 +18,8 @@ paths:
           type: string
       responses:
         200:
-          description: Wszystko OK
-          schema:
-            title: Animal
-            type: object
-            properties:
-              name:
-                type: string
-              single:
-                type: boolean
-          
+          description: OK
+
   /files/{id}:
     delete:
       description: Usunięcie zdjęcia o zadanym id
@@ -40,15 +32,7 @@ paths:
           type: string
       responses:
         200:
-          description: Wszystko OK
-          schema:
-            title: Animal
-            type: object
-            properties:
-              name:
-                type: string
-              single:
-                type: boolean
+          description: OK
 
     get:
       description: Pobranie zdjęcia o zadanym id (które występuje w obiekcie Animal jako filename
@@ -61,16 +45,8 @@ paths:
           type: string
       responses:
         200:
-          description: Wszystko OK
-          schema:
-            title: Animal
-            type: object
-            properties:
-              name:
-                type: string
-              single:
-                type: boolean
-          
+          description: OK
+
   /files/{id}?profil={profil}:
     patch:
       description: Modyfikacja zdjęcia profilowego
@@ -89,15 +65,7 @@ paths:
           type: boolean
       responses:
         200:
-          description: Wszystko OK
-          schema:
-            title: Animal
-            type: object
-            properties:
-              name:
-                type: string
-              single:
-                type: boolean
+          description: OK
 
   /files/upload/{filename}?animalId={animalId}&profil={profil}:
     post:
@@ -123,16 +91,28 @@ paths:
           type: boolean
       responses:
         200:
-          description: Wszystko OK
+          description: OK
+
+  /animals/getbyids:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      description: Pobranie listy obiektów typu `Animal` na podstawie tablicy `id`
+      parameters:
+        -
+          name: ids
+          in: body
+          description: tablica id
+          required: true
           schema:
-            title: Animal
-            type: object
-            properties:
-              name:
-                type: string
-              single:
-                type: boolean
-                
+            type: string
+            description: tablica json o kluczu 'ids'
+      responses:
+        200:
+          description: OK
+          
   /animals/{id}:
     get:
       description: Pobranie obiektu typu `Animal` o zadanym `id`
@@ -146,16 +126,8 @@ paths:
           format: int
       responses:
         200:
-          description: Wszystko OK
-          schema:
-            title: Animal
-            type: object
-            properties:
-              name:
-                type: string
-              single:
-                type: boolean
-      
+          description: OK
+
   /animals:
     get:
       description: |
@@ -178,16 +150,4 @@ paths:
           format: int
       responses:
         200:
-          description: Wszystko OK
-          schema:
-            title: ArrayOfAnimals
-            type: array
-            items:
-              title: Animal
-              type: object
-              properties:
-                name:
-                  type: string
-                single:
-                  type: boolean
-  
+          description: OK
