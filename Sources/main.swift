@@ -60,10 +60,14 @@ if let oldapi = getenv("N4L_OLDAPI_IMAGES_URL") {
 }
 let photoBackend = PhotoBackend(db: db)
 
+
+let shelterBackend = ShelterBackend(db: db)
+
 let animalController = Controller(backend: animalBackend)
 let filesController = FilesController(path: defaultImagesPath, backend: photoBackend)
 let loginController = LoginController(db: db)
 let logoutController = LogoutController()
+let shelterController = ShelterController(backend: shelterBackend)
 
 let mainRouter = Router()
 mainRouter.get("/") {
@@ -75,16 +79,19 @@ mainRouter.all("login", middleware: session)
 mainRouter.all("logout", middleware: session)
 mainRouter.all("animals", middleware: session)
 mainRouter.all("files", middleware: session)
+mainRouter.all("shelter", middleware: session)
 
 mainRouter.all("login", middleware: cors)
 mainRouter.all("logout", middleware: cors)
 mainRouter.all("animals", middleware: cors)
 mainRouter.all("files", middleware: cors)
+mainRouter.all("shelter", middleware: cors)
 
 mainRouter.all("animals", middleware: animalController.router)
 mainRouter.all("files", middleware: filesController.router)
 mainRouter.all("login", middleware: loginController.router)
 mainRouter.all("logout", middleware: logoutController.router)
+mainRouter.all("shelter", middleware: shelterController.router)
 
 //  an HTTP server and connect it to the router
 Kitura.addHTTPServer(onPort: listenPort, with: mainRouter)
