@@ -8,6 +8,7 @@
 
 import PostgreSQL
 import LoggerAPI
+import SwiftyJSON
 
 public class DBLayer {
     let config: DBConfig
@@ -282,7 +283,34 @@ public class DBLayer {
         return updatedId
     }
 
+    func updatePassword(forUser secUser: SecUser, withShelterId shelterId: Int) throws -> Int {
 
+        //check if the old password is correct
+        let passwordCheckCmd = "select email from sec_user where shelter_id = $1 and sha_password = digest($2, $3)"
+        guard let oldPasswordNode = secUser.oldPassword?.makeNode() else {
+            throw SecUserError.badDbParams
+        }
+
+        let passwordCheckResult = try db.execute(passwordCheckCmd, [shelterId.makeNode(), oldPasswordNode, "sha256".makeNode()])
+
+        guard !passwordCheckResult.isEmpty else {
+            throw SecUserError.wrongOldPassword(JSON([SecUser.oldPasswordKey: "Incorrect"]))
+        }
+
+        //if all good update the password
+        let passwordChangeCmd = "UPDATE \(Config.secUserTable) SET sha_password = digest($1, $2) where shelter_id = \(shelterId) RETURNING SHELTER_ID"
+
+        var passwordChangeResult:[[String: Node]]?
+        if let newPasswordNode = secUser.newPassword?.makeNode() {
+            passwordChangeResult = try db.execute(passwordChangeCmd, [newPasswordNode, "sha256".makeNode()])
+        }
+
+        guard !passwordCheckResult.isEmpty, let updatedId = passwordChangeResult?.first?["shelter_id"]?.int else {
+            throw SecUserError.badDbParams
+        }
+
+        return updatedId
+    }
     
 
 }

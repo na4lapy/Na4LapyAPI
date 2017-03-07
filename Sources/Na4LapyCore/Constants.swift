@@ -109,6 +109,7 @@ struct Config {
     static let animaltable = "animal"
     static let phototable = "photo"
     static let shelterTable = "shelter"
+    static let secUserTable = "sec_user"
     static let oldapiPhotoUrl = "http://api.na4lapy.org/images/"
 }
 
