@@ -11,7 +11,7 @@ import LoggerAPI
 import Foundation
 import SwiftyJSON
 
-public class ShelterController {
+public class ShelterController: SessionCheckable {
     public let router = Router()
     let backend: ShelterBackend
 
@@ -25,6 +25,7 @@ public class ShelterController {
     private func setup(){
         router.get("/:id", handler: onGetbyId)
         router.patch("", handler: onPatch)
+        router.get("/", handler: onGetAll)
     }
 
     private func onGetbyId(request: RouterRequest, response: RouterResponse, next: () -> Void) {
@@ -62,15 +63,19 @@ public class ShelterController {
         }
     }
 
-    //TODO: THIS IS DUPLICATE NEED TO REFACTOR
-    private func checkSession(request: RouterRequest, response: RouterResponse) throws -> Int {
-        guard let sess = request.session, let shelterid = sess[SecUserDBKey.shelterid].string, let sessShelterid = Int(shelterid) else {
-            Log.error("Wymagane uwierzytelnienie.")
-            response.status(.forbidden)
+    private func onGetAll(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+
+        do {
+            let result = try backend.get()
+            try response.status(.OK).send(json: JSON(result)).end()
+        } catch (let error) {
+            Log.error(error.localizedDescription)
+            response.status(.internalServerError)
             try? response.end()
-            throw ResultCode.AuthorizationError
+            return
         }
-        return sessShelterid
+
     }
+
 
 }

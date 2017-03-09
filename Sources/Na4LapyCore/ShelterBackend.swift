@@ -41,4 +41,21 @@ public class ShelterBackend {
         return id
     }
 
+    public func get() throws -> [JSONDictionary] {
+        let dbresult = try db.fetch(fromTable: Config.shelterTable)
+
+        if dbresult.isEmpty {
+            throw ResultCode.ShelterBackendNoData
+        }
+
+        let shelters = dbresult.flatMap({ Shelter.init(dictionary: $0) })
+
+        if shelters.isEmpty {
+            throw ResultCode.ShelterBackendNoData
+        }
+
+        return shelters.map { $0.dictionaryRepresentation() }
+
+    }
+
 }

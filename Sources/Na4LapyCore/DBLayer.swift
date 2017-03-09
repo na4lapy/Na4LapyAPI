@@ -1,4 +1,4 @@
-add//
+//
 //  DBLayer.swift
 //  Na4lapyAPI
 //
@@ -203,6 +203,8 @@ public class DBLayer {
         return try db.execute(sqlcmd)
     }
 
+
+
     /**
     Metoda zwraca obiekty z uwzględnieniem stronicowania oraz id schroniska
     Wykorzystywana przez panel
@@ -247,6 +249,11 @@ public class DBLayer {
 //        let sqlcmd = "select *, (select count(*) from \(table) where status = 'ACTIVE' and animal_status = 'FOR_ADOPTION') as count from \(table) where status = 'ACTIVE' and animal_status = 'FOR_ADOPTION' offset \(offset) limit \(size)"
         let sqlcmd = "select *, (select count(*) from \(table)) as count from \(table) offset \(offset) limit \(size)"
         return try db.execute(sqlcmd)
+    }
+
+    public func fetch(fromTable table: String) throws -> [DBEntry] {
+        let sqlCommand = "select * from \(table)"
+        return try db.execute(sqlCommand)
     }
     
     /**
