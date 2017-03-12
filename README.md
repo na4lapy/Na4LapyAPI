@@ -91,3 +91,43 @@ export N4L_API_DATABASE_PASS="___PASS___"
 
 .build/debug/Na4lapyAPI
 ```
+
+### Deploy nowej wersji API 
+
+Wszystkie operacje muszą być wykonywane w imieniu użytkownika 'na4lapy'. Z tego powodu, po zalogowaniu jako 'root' należy wykonać polecenie:
+
+```shell
+# su - na4lapy
+```
+
+Kod źródłowy znajduje się w katalogu /opt/Na4LapyAPI/
+Aby pobrać najnowszą wersję należy wykonać polecenie 'git pull', oraz uruchomić testy i kompilację
+
+```shell
+$ cd /opt/Na4LapyAPI
+$ git pull
+$ swift test
+$ swift build
+```
+
+Po poprawnie wykonanej kompilacji należy wykonać restart serwera api:
+
+```shell
+$ sudo systemctl restart na4lapyapi
+```
+
+Dodatkowo możliwe są operacje zatrzymywania, uruchamiania oraz badania stanu serwera api:
+
+```shell
+$ sudo systemctl stop na4lapyapi
+$ sudo systemctl start na4lapyapi
+$ sudo systemctl status na4lapyapi
+```
+
+Logi serwera api dostępne są za pomocą polecenia:
+
+```shell
+$ sudo journalctl -fu na4lapyapi
+```
+
+
