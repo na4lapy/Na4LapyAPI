@@ -31,13 +31,13 @@ lrwxr-xr-x  1 root  wheel  54 27 gru 13:48 /usr/local/include -> /Users/YOUR_LOG
 ### Pobierz repozytorium
 
 ```shell
-$ git clone https://github.com/na4lapy/na4lapy-api
+$ git clone https://github.com/na4lapy/Na4LapyAPI
 ```
 
 ### Zbuduj projekt dla XCode
 
 ```shell
-$ cd na4lapy-api
+$ cd Na4LapyAPI
 $ swift package generate-xcodeproj
 ```
 
@@ -78,9 +78,11 @@ struct DBDefault {
 ### Kompilacja:
 
 ```shell
-$ cd na4lapy-api
+$ cd Na4LapyAPI
 $ swift build
 ```
+
+W wyniku zostanie zbudowany plik '.build/debug/Server'
 
 ### Przykładowy skrypt uruchamiający
 
@@ -89,10 +91,10 @@ $ swift build
 export N4L_API_DATABASE_USER="na4lapy"
 export N4L_API_DATABASE_PASS="___PASS___"
 
-.build/debug/Na4lapyAPI
+.build/debug/Server
 ```
 
-### Deploy nowej wersji API 
+## Deploy nowej wersji API 
 
 Wszystkie operacje muszą być wykonywane w imieniu użytkownika 'na4lapy'. Z tego powodu, po zalogowaniu jako 'root' należy wykonać polecenie:
 
