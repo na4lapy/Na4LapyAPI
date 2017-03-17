@@ -72,7 +72,6 @@ struct Animal {
         self.status = Status(rawValue: json[AnimalJSON.status] as? String ?? "")
     }
     
-    
     init?(dictionary: DBEntry) {
         guard
             let shelterId = dictionary[AnimalDBKey.shelterid]?.int,

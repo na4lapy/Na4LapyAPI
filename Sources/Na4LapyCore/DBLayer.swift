@@ -335,9 +335,9 @@ public class DBLayer {
 
         let areTermsAcceptedCmd = "SELECT are_terms_of_use_accepted from \(Config.secUserTable) where shelter_id = $1"
 
-        let aretTermsAcceptedResult = try db.execute(areTermsAcceptedCmd, [shelterId.makeNode()])
+        let areTermsAcceptedResult = try db.execute(areTermsAcceptedCmd, [shelterId.makeNode()])
 
-        guard !aretTermsAcceptedResult.isEmpty, let accepted = aretTermsAcceptedResult.first?["are_terms_of_use_accepted"]?.bool else {
+        guard !areTermsAcceptedResult.isEmpty, let accepted = areTermsAcceptedResult.first?["are_terms_of_use_accepted"]?.bool else {
             throw SecUserError.badDbParams
         }
 

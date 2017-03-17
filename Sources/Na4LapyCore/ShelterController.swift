@@ -23,9 +23,13 @@ public class ShelterController: SessionCheckable {
 
     /// MARK: konfiguracja routerów
     private func setup(){
+        //this is the endpoint for shelter that was logged and its shelterId is being held in session cookie
+        router.get("/info", handler: onGetLoggedShelterInfo)
+
         router.get("/:id", handler: onGetbyId)
         router.patch("", handler: onPatch)
         router.get("/", handler: onGetAll)
+
     }
 
     private func onGetbyId(request: RouterRequest, response: RouterResponse, next: () -> Void) {
@@ -65,6 +69,7 @@ public class ShelterController: SessionCheckable {
 
     private func onGetAll(request: RouterRequest, response: RouterResponse, next: () -> Void) {
 
+
         do {
             let result = try backend.get()
             try response.status(.OK).send(json: JSON(result)).end()
@@ -74,7 +79,22 @@ public class ShelterController: SessionCheckable {
             try? response.end()
             return
         }
+    }
 
+    //this is the endpoint for shelter that was logged and its shelterId is being held in session cookie
+
+    private func onGetLoggedShelterInfo(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+
+        do {
+            let shelterId = try checkSession(request: request, response: response)
+            let result = try backend.get(byId: shelterId)
+            try response.status(.OK).send(json: JSON(result)).end()
+        } catch (let error) {
+            Log.error(error.localizedDescription)
+            response.status(.unauthorized)
+            try? response.end()
+            return
+        }
     }
 
 

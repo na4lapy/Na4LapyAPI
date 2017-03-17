@@ -76,7 +76,6 @@ mainRouter.get("/") {
     next()
 }
 
-
 mainRouter.all("auth", middleware: session)
 mainRouter.all("animals", middleware: session)
 mainRouter.all("files", middleware: session)
