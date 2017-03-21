@@ -19,7 +19,7 @@ import Na4LapyCore
 HeliumLogger.use()
 
 var dbconfig = DBConfig()
-var animalBackend: Model
+var animalBackend: AnimalBackend
 let defaultListenPort = 8123
 var defaultImagesPath = ""
 var listenPort: Int = defaultListenPort
@@ -54,12 +54,12 @@ if let apiport = getenv("N4L_API_LISTEN_PORT") {
 
 let db = DBLayer(config: dbconfig)
 
-if let oldapi = getenv("N4L_OLDAPI_IMAGES_URL") {
-    Log.info("Uruchomienie w trybie OLD_API, url: \(dbconfig.oldapiUrl)")
-    animalBackend = AnimalBackend_oldapi(db: db)
-} else {
+//if let oldapi = getenv("N4L_OLDAPI_IMAGES_URL") {
+//    Log.info("Uruchomienie w trybie OLD_API, url: \(dbconfig.oldapiUrl)")
+//    animalBackend = AnimalBackend_oldapi(db: db)
+//} else {
     animalBackend = AnimalBackend(db: db)
-}
+//}
 let photoBackend = PhotoBackend(db: db)
 
 

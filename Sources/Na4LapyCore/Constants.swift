@@ -143,12 +143,13 @@ struct AnimalJSON {
     static let status = "status"
     static let total = "totalPages"
     static let data = "data"
+    static let calculatedPreferences = "calculatedPreferences"
 }
 
 struct AnimalDBKey {
     static let name = "name"
     static let id = "id"
-    static let shelterid = "shelter_id"
+    static let shelterId = "shelter_id"
     static let race = "race"
     static let description = "description"
     static let birthDate = "birth_date"
@@ -168,7 +169,7 @@ struct AnimalDBKey {
     static let status = "status"
     static let total = "total"
     static let data = "data"
-
+    static let calculatedPreferences = "calculatepreferences"
 }
 
 struct PhotoDBKey {
@@ -204,6 +205,7 @@ struct ShelterDBKey {
     static let account_number = "account_number"
     static let adoption_rules = "adoption_rules"
     static let status = "active"
+
 }
 
 struct ShelterJSON {
@@ -224,8 +226,8 @@ struct ShelterJSON {
 }
 
 enum Sterilization: String {
-    case Sterilized = "STERILIZED"
-    case NotSterilized = "NOT_STERILIZED"
+    case sterilized = "STERILIZED"
+    case notSterilized = "NOT_STERILIZED"
 }
 
 enum Gender: String {

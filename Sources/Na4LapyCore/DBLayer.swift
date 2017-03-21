@@ -219,7 +219,7 @@ public class DBLayer {
             throw ResultCode.DBLayerBadPageOrSize
         }
         let offset = page * size
-        let sqlcmd = "select *, (select count(*) from \(table) where \(AnimalDBKey.shelterid)=\(shelterid)) as count from \(table) where \(AnimalDBKey.shelterid)=\(shelterid) offset \(offset) limit \(size)"
+        let sqlcmd = "select *, (select count(*) from \(table) where \(AnimalDBKey.shelterId)=\(shelterid)) as count from \(table) where \(AnimalDBKey.shelterId)=\(shelterid) offset \(offset) limit \(size)"
         return try db.execute(sqlcmd)
     }
     
@@ -228,7 +228,7 @@ public class DBLayer {
      Wykorzystywana przez panel
     */
     public func fetchAll(shelterid: Int) throws -> [DBEntry] {
-        let sqlcmd = "SELECT * FROM \(Config.animaltable) WHERE \(AnimalDBKey.shelterid) = \(shelterid)"
+        let sqlcmd = "SELECT * FROM \(Config.animaltable) WHERE \(AnimalDBKey.shelterId) = \(shelterid)"
         return try db.execute(sqlcmd)
     }
 
@@ -245,8 +245,7 @@ public class DBLayer {
             throw ResultCode.DBLayerBadPageOrSize
         }
         let offset = page * size
-        
-//        let sqlcmd = "select *, (select count(*) from \(table) where status = 'ACTIVE' and animal_status = 'FOR_ADOPTION') as count from \(table) where status = 'ACTIVE' and animal_status = 'FOR_ADOPTION' offset \(offset) limit \(size)"
+
         let sqlcmd = "select *, (select count(*) from \(table)) as count from \(table) offset \(offset) limit \(size)"
         return try db.execute(sqlcmd)
     }
@@ -263,7 +262,7 @@ public class DBLayer {
      - Parameter table
      */
     public func fetchAllActiveAnimals(table: String) throws -> [DBEntry] {
-        //        let sqlcmd = "SELECT * FROM \(table) where status = 'ACTIVE' and animal_status = 'FOR_ADOPTION'"
+
         let sqlcmd = "SELECT * FROM \(table)"
         return try db.execute(sqlcmd)
     }
@@ -342,6 +341,10 @@ public class DBLayer {
         }
 
         return accepted
+    }
+
+    func execute(_ query: String) throws -> [DBEntry]? {
+        return try db.execute(query)
     }
     
 
