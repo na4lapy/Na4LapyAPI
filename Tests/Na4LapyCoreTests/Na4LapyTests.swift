@@ -9,6 +9,7 @@
 import XCTest
 
 import PostgreSQL
+import Foundation
 @testable import Na4LapyCore
 
 class Na4LapyCoreTests: XCTestCase {
