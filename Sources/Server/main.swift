@@ -21,7 +21,7 @@ import Na4LapyCore
 HeliumLogger.use()
 
 var dbconfig = DBConfig()
-var animalBackend: Model
+var animalBackend: AnimalBackend
 let defaultListenPort = 8123
 var defaultImagesPath = ""
 var listenPort: Int = defaultListenPort
