@@ -28,8 +28,9 @@ class AnimalQueryBuilder {
     var size: Int?
     var page: Int?
 
-    init(params: RequestParams) {
+    init(params: RequestParams, shelterId: Int?) {
         self.parse(params)
+        self.shelterId = shelterId
     }
 
     init() {
