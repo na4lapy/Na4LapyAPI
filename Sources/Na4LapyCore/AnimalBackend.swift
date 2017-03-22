@@ -53,7 +53,7 @@ public class AnimalBackend {
     public func getall(shelterid: Int?, params: [String: String]) throws -> JSONDictionary {
         var dbresult: [DBEntry]?
 
-        let animalQuery = AnimalQueryBuilder(params: params, shelterId: shelterId).build()
+        let animalQuery = AnimalQueryBuilder(params: params, shelterId: shelterid).build()
 
 
         dbresult = try animalQuery.flatMap(db.execute)
