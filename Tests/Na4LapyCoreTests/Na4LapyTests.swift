@@ -9,6 +9,7 @@
 import XCTest
 
 import PostgreSQL
+import Foundation
 @testable import Na4LapyCore
 
 class Na4LapyCoreTests: XCTestCase {
@@ -33,7 +34,7 @@ class Na4LapyCoreTests: XCTestCase {
         let input: DBEntry = [
             AnimalDBKey.name : Node("Vika"),
             AnimalDBKey.id   : Node(10),
-            AnimalDBKey.shelterid : Node(100),
+            AnimalDBKey.shelterId : Node(100),
             AnimalDBKey.race : Node("Labiszon"),
             AnimalDBKey.description : Node("Wiecznie głodny"),
             AnimalDBKey.sterilization : Node("STERILIZED"),

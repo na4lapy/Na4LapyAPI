@@ -13,14 +13,14 @@ import KituraSession
 import Foundation
 
 public class AnimalController: SessionCheckable {
-    public let backend: Model
+    public let backend: AnimalBackend
     public let router = Router()
 
     //
     // MARK: inicjalizacja
     //
     
-    public init(backend: Model) {
+    public init(backend: AnimalBackend) {
         self.backend = backend
         setup()
     }
@@ -153,51 +153,24 @@ public class AnimalController: SessionCheckable {
  
     */
     private func onGetWithParams(request: RouterRequest, response: RouterResponse, next: () -> Void) {
-        var params = request.queryParameters
+        let params = request.queryParameters
         var shelterid: Int? = nil
         
         if let sess = request.session, let sessShelterid = sess[SecUserDBKey.shelterid].string, let sid = Int(sessShelterid) {
             shelterid = sid
         }
-        
-        if params.isEmpty {
-            do {
-                let result = try backend.getall(shelterid: shelterid)
-                response.headers.append(ResponseHeader.cacheControl, value: ResponseHeader.cacheControlValue)
-                try response.status(.OK).send(json: JSON(result)).end()
-                return
-            } catch (let error) {
-                Log.error(error.localizedDescription)
-                response.status(.internalServerError)
-                try? response.end()
-                return
-            }
-        }
-        
-        guard
-            let page = params["page"],
-            let size = params["size"],
-            let intpage = Int(page),
-            let intsize = Int(size)
-        else {
-            try? response.status(.badRequest).end()
-            Log.error("Brak parametru 'page' i/lub 'size' w zapytaniu.")
-            return
-        }
-        
-        // usunięcie 'page' oraz 'size' ze stringu 'params'
-        params.removeValue(forKey: "page")
-        params.removeValue(forKey: "size")
-        
+
         do {
-            let result = try backend.get(byPage: intpage, size: intsize, shelterid: shelterid, withParameters: params)
+            let result = try backend.getall(shelterid: shelterid, params: params)
             response.headers.append(ResponseHeader.cacheControl, value: ResponseHeader.cacheControlValue)
             try response.status(.OK).send(json: JSON(result)).end()
         } catch (let error) {
             Log.error(error.localizedDescription)
             response.status(.internalServerError)
             try? response.end()
+            return
         }
+
     }
 
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class AnimalBackend: Model {
+public class AnimalBackend {
     let db: DBLayer
     
     public init(db: DBLayer) {
@@ -50,24 +50,25 @@ public class AnimalBackend: Model {
      Pobieranie wszystkich obiektów
      
      */
-    public func getall(shelterid: Int?) throws -> JSONDictionary {
-        var dbresult: [DBEntry]
-        
-        if let shelterid = shelterid {
-            dbresult = try db.fetchAll(shelterid: shelterid)
-        } else {
-            dbresult = try db.fetchAllActiveAnimals(table: Config.animaltable)
+    public func getall(shelterid: Int?, params: [String: String]) throws -> JSONDictionary {
+        var dbresult: [DBEntry]?
+
+        let animalQuery = AnimalQueryBuilder(params: params, shelterId: shelterid).build()
+
+
+        dbresult = try animalQuery.flatMap(db.execute)
+
+        guard let dbResult = dbresult, !dbResult.isEmpty else {
+            return [:]
         }
 
-        if dbresult.count == 0 {
-            throw ResultCode.AnimalBackendNoData
-        }
         let photo = PhotoBackend(db: db)
         var animals: [JSONDictionary] = []
-        
-        // TODO: metody pobierania danych z bazy być może powinny pracować na innym wątku,
-        // TODO: wymaga to zastosowania zabezpieczeń, choćby DispatchGroup
-        for entry in dbresult {
+//
+//        // TODO: metody pobierania danych z bazy być może powinny pracować na innym wątku,
+//        // TODO: wymaga to zastosowania zabezpieczeń, choćby DispatchGroup
+
+        for entry in dbResult {
             guard let animal = Animal(dictionary: entry) else {
                 throw ResultCode.AnimalBackendBadParameters
             }
@@ -114,6 +115,7 @@ public class AnimalBackend: Model {
         if !params.isEmpty {
             // TODO
             // w zapytaniu są dodatkowe parametry
+
         }
         var dbresult: [DBEntry]
         

@@ -29,6 +29,8 @@ public class SecUserController: SessionCheckable {
         router.post("/login", handler: onLogin)
         router.get("/logout", handler: onLogout)
         router.post("/change_password", handler: onPasswordChange)
+        router.patch("/terms_of_use", handler: onTermsOfUseChange)
+        router.get("/terms_of_use", handler: onTermsOfUseGet)
     }
     
     //
@@ -114,10 +116,76 @@ public class SecUserController: SessionCheckable {
                     response.send(json: errorJson)
                 }
 
-                try? response.end()
             }
         }
+
+        try? response.end()
+
     }
+
+    /// Called when panel is trying to accepts terms of use, SECURED BY COOKIE CHECK
+    ///
+    /// - Parameters:
+    ///   - request: request should contain areTermsOfUseAccepted bool, value
+    ///   - response: response
+    ///   - next: func to call next
+    private func onTermsOfUseChange(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+        do {
+            let shelterId = try checkSession(request: request, response: response)
+            var data = Data()
+
+            _ = try request.read(into: &data)
+            let json = JSON(data: data)
+
+            guard let areTermsOfUserAccepted = json["areTermsOfUseAccepted"].bool else {
+                throw SecUserError.missingParams(JSON(["areTermsOfUseAccepted", JSON.missingParamJsonErrorString]))
+            }
+
+            let updatedId = try db.update(areTermsOfUseAccepted: areTermsOfUserAccepted, forShelterId: shelterId)
+
+            try? response.status(.OK).send("\(updatedId)").end()
+
+        } catch (let error) {
+
+            if let secUserError = error as? SecUserError {
+                var errorJson: JSON?
+                switch secUserError {
+                case .missingParams(let json):
+                    errorJson = json
+                default:
+                    break
+                }
+
+            Log.error(error.localizedDescription)
+            response.status(.unprocessableEntity)
+
+            if let errorJson = errorJson {
+                response.send(json: errorJson)
+            }
+        }
+
+        try? response.end()
+
+        }
+    }
+
+    private func onTermsOfUseGet(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+
+        do {
+            let shelterId = try checkSession(request: request, response: response)
+
+            let areTermsOfUseAccepterd = try db.areTermsOfUseAccepted(forShelterId: shelterId)
+
+            try? response.status(.OK).send("\(areTermsOfUseAccepterd)").end()
+        } catch (let error) {
+
+            Log.error(error.localizedDescription)
+            response.status(.internalServerError)
+            try? response.end()
+        }
+    }
+
+
 }
     
 

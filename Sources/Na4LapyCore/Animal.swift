@@ -28,6 +28,7 @@ struct Animal {
     private var vaccination: Vaccination?
     private var animalstatus: AnimalStatus?
     private var status: Status?
+    private var calculatedPreferences: Double?
     
     init?(withJSON json: JSONDictionary) {
         guard
@@ -72,10 +73,9 @@ struct Animal {
         self.status = Status(rawValue: json[AnimalJSON.status] as? String ?? "")
     }
     
-    
     init?(dictionary: DBEntry) {
         guard
-            let shelterId = dictionary[AnimalDBKey.shelterid]?.int,
+            let shelterId = dictionary[AnimalDBKey.shelterId]?.int,
             let id = dictionary[AnimalDBKey.id]?.int,
             let name = dictionary[AnimalDBKey.name]?.string
         else {
@@ -111,6 +111,7 @@ struct Animal {
         self.vaccination = Vaccination(rawValue: dictionary[AnimalDBKey.vaccination]?.string ?? "")
         self.animalstatus = AnimalStatus(rawValue: dictionary[AnimalDBKey.animalstatus]?.string ?? "")
         self.status = Status(rawValue: dictionary[AnimalDBKey.status]?.string ?? "")
+        self.calculatedPreferences = dictionary[AnimalDBKey.calculatedPreferences]?.double
     }
     
     func dictionaryRepresentation() -> JSONDictionary {
@@ -132,7 +133,7 @@ struct Animal {
         let stat1 = self.animalstatus?.rawValue ?? ""
         let stat2 = self.status?.rawValue ?? ""
         
-        let dict: JSONDictionary =
+        var dict: JSONDictionary =
             [AnimalJSON.id : self.id,
              AnimalJSON.shelterid : self.shelterId,
              AnimalJSON.name : self.name,
@@ -149,8 +150,12 @@ struct Animal {
              AnimalJSON.training : train,
              AnimalJSON.vaccination : vacc,
              AnimalJSON.animalstatus : stat1,
-             AnimalJSON.status : stat2
-            ]
+             AnimalJSON.status : stat2,
+        ]
+
+        if let calcPrefs = self.calculatedPreferences {
+            dict[AnimalJSON.calculatedPreferences] = calcPrefs
+        }
         return dict
     }
     
@@ -179,7 +184,7 @@ struct Animal {
         let db: DBEntry =
             [AnimalDBKey.id : Node(self.id),
              AnimalDBKey.name : nam,
-             AnimalDBKey.shelterid : shel,
+             AnimalDBKey.shelterId : shel,
              AnimalDBKey.race : race,
              AnimalDBKey.description : desc,
              AnimalDBKey.birthDate : birth,

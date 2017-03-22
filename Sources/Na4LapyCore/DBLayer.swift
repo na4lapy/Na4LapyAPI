@@ -219,7 +219,7 @@ public class DBLayer {
             throw ResultCode.DBLayerBadPageOrSize
         }
         let offset = page * size
-        let sqlcmd = "select *, (select count(*) from \(table) where \(AnimalDBKey.shelterid)=\(shelterid)) as count from \(table) where \(AnimalDBKey.shelterid)=\(shelterid) offset \(offset) limit \(size)"
+        let sqlcmd = "select *, (select count(*) from \(table) where \(AnimalDBKey.shelterId)=\(shelterid)) as count from \(table) where \(AnimalDBKey.shelterId)=\(shelterid) offset \(offset) limit \(size)"
         return try db.execute(sqlcmd)
     }
     
@@ -228,7 +228,7 @@ public class DBLayer {
      Wykorzystywana przez panel
     */
     public func fetchAll(shelterid: Int) throws -> [DBEntry] {
-        let sqlcmd = "SELECT * FROM \(Config.animaltable) WHERE \(AnimalDBKey.shelterid) = \(shelterid)"
+        let sqlcmd = "SELECT * FROM \(Config.animaltable) WHERE \(AnimalDBKey.shelterId) = \(shelterid)"
         return try db.execute(sqlcmd)
     }
 
@@ -245,8 +245,7 @@ public class DBLayer {
             throw ResultCode.DBLayerBadPageOrSize
         }
         let offset = page * size
-        
-//        let sqlcmd = "select *, (select count(*) from \(table) where status = 'ACTIVE' and animal_status = 'FOR_ADOPTION') as count from \(table) where status = 'ACTIVE' and animal_status = 'FOR_ADOPTION' offset \(offset) limit \(size)"
+
         let sqlcmd = "select *, (select count(*) from \(table)) as count from \(table) offset \(offset) limit \(size)"
         return try db.execute(sqlcmd)
     }
@@ -263,7 +262,7 @@ public class DBLayer {
      - Parameter table
      */
     public func fetchAllActiveAnimals(table: String) throws -> [DBEntry] {
-        //        let sqlcmd = "SELECT * FROM \(table) where status = 'ACTIVE' and animal_status = 'FOR_ADOPTION'"
+
         let sqlcmd = "SELECT * FROM \(table)"
         return try db.execute(sqlcmd)
     }
@@ -317,6 +316,35 @@ public class DBLayer {
         }
 
         return updatedId
+    }
+
+    func update(areTermsOfUseAccepted accepted: Bool, forShelterId shelterId: Int) throws -> Int {
+        let termsUpdateCmd = "UPDATE \(Config.secUserTable) SET are_terms_of_use_accepted = $1 WHERE shelter_id = $2 RETURNING SHELTER_ID"
+
+        let termsUpdateResult = try db.execute(termsUpdateCmd, [accepted.makeNode(), shelterId.makeNode()])
+
+        guard !termsUpdateResult.isEmpty, let updatedId = termsUpdateResult.first?["shelter_id"]?.int else {
+            throw SecUserError.badDbParams
+        }
+
+        return updatedId
+    }
+
+    func areTermsOfUseAccepted(forShelterId shelterId: Int) throws -> Bool {
+
+        let areTermsAcceptedCmd = "SELECT are_terms_of_use_accepted from \(Config.secUserTable) where shelter_id = $1"
+
+        let areTermsAcceptedResult = try db.execute(areTermsAcceptedCmd, [shelterId.makeNode()])
+
+        guard !areTermsAcceptedResult.isEmpty, let accepted = areTermsAcceptedResult.first?["are_terms_of_use_accepted"]?.bool else {
+            throw SecUserError.badDbParams
+        }
+
+        return accepted
+    }
+
+    func execute(_ query: String) throws -> [DBEntry]? {
+        return try db.execute(query)
     }
     
 

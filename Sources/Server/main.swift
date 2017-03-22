@@ -28,7 +28,7 @@ var listenPort: Int = defaultListenPort
 
 // Session
 //
-let session = Session(secret: UUID().uuidString)
+let session = Session(secret: UUID().uuidString, cookie: [.secure(true)])
 
 // CORS
 //
@@ -56,12 +56,12 @@ if let apiport = getenv("N4L_API_LISTEN_PORT") {
 
 let db = DBLayer(config: dbconfig)
 
-if let oldapi = getenv("N4L_OLDAPI_IMAGES_URL") {
-    Log.info("Uruchomienie w trybie OLD_API, url: \(dbconfig.oldapiUrl)")
-    animalBackend = AnimalBackend_oldapi(db: db)
-} else {
+//if let oldapi = getenv("N4L_OLDAPI_IMAGES_URL") {
+//    Log.info("Uruchomienie w trybie OLD_API, url: \(dbconfig.oldapiUrl)")
+//    animalBackend = AnimalBackend_oldapi(db: db)
+//} else {
     animalBackend = AnimalBackend(db: db)
-}
+//}
 let photoBackend = PhotoBackend(db: db)
 
 
