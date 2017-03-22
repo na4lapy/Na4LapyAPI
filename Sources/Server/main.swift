@@ -26,7 +26,7 @@ var listenPort: Int = defaultListenPort
 
 // Session
 //
-let session = Session(secret: UUID().uuidString)
+let session = Session(secret: UUID().uuidString, cookie: [.secure(true)])
 
 // CORS
 //
