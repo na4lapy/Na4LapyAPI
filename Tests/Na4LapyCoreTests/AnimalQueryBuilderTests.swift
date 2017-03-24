@@ -242,7 +242,7 @@ class AnimalQueryBuilderTests: XCTestCase {
             "animalSize": "small"
         ]
 
-        let sut = AnimalQueryBuilder(params: params)
+        let sut = AnimalQueryBuilder(params: params, shelterId: 1)
         XCTAssertEqual(sut.animalSize, Size.small)
     }
 
@@ -250,7 +250,7 @@ class AnimalQueryBuilderTests: XCTestCase {
         let params = [
             "animalSize": "medium"
         ]
-        let sut = AnimalQueryBuilder(params: params)
+        let sut = AnimalQueryBuilder(params: params, shelterId: 1)
             XCTAssertEqual(sut.animalSize, Size.medium)
     }
 
@@ -268,7 +268,7 @@ class AnimalQueryBuilderTests: XCTestCase {
             "animalStatus": "FOR_aDoPtion"
         ]
 
-        let sut = AnimalQueryBuilder(params: params)
+        let sut = AnimalQueryBuilder(params: params, shelterId: 1)
 
         XCTAssertEqual(sut.animalSize, Size.large)
         XCTAssertEqual(sut.gender, Gender.female)
