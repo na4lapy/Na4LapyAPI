@@ -30,9 +30,9 @@ struct Animal {
     private var status: Status?
     private var calculatedPreferences: Double?
     
-    init?(withJSON json: JSONDictionary) {
+    init?(withJSON json: JSONDictionary, withShelterId shelterId: Int) {
         guard
-            let shelterId = json[AnimalJSON.shelterid] as? Int,
+            let shelterId = shelterId as? Int,
             let name = json[AnimalJSON.name] as? String else {
                 return nil
         }

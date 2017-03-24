@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import LoggerAPI
 
 public class AnimalBackend {
     let db: DBLayer
@@ -25,8 +26,8 @@ public class AnimalBackend {
      
      - Parameter dictionary
      */
-    public func edit(withDictionary dictionary: JSONDictionary) throws -> Int {
-        guard let animal = Animal(withJSON: dictionary) else {
+    public func edit(withDictionary dictionary: JSONDictionary, withShelterId shelterId: Int) throws -> Int {
+        guard let animal = Animal(withJSON: dictionary, withShelterId: shelterId) else {
             throw ResultCode.AnimalBackendBadParameters
         }
         let id = try db.editAnimal(values: animal.dbRepresentation())
@@ -38,8 +39,8 @@ public class AnimalBackend {
  
     - Parameter dictionary
     */
-    public func add(withDictionary dictionary: JSONDictionary) throws -> Int {
-        guard let animal = Animal(withJSON: dictionary) else {
+    public func add(withDictionary dictionary: JSONDictionary, withShelterId shelterId: Int) throws -> Int {
+        guard let animal = Animal(withJSON: dictionary, withShelterId: shelterId) else {
             throw ResultCode.AnimalBackendBadParameters
         }
         let id = try db.addIntoAnimal(values: animal.dbRepresentation())
@@ -54,8 +55,6 @@ public class AnimalBackend {
         var dbresult: [DBEntry]?
 
         let animalQuery = AnimalQueryBuilder(params: params, shelterId: shelterid).build()
-
-
         dbresult = try animalQuery.flatMap(db.execute)
 
         guard let dbResult = dbresult, !dbResult.isEmpty else {

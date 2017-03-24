@@ -86,16 +86,11 @@ public class AnimalController: SessionCheckable {
         var data = Data()
 
         do {
-            let sessShelterid = try checkSession(request: request, response: response)
+            let sessShelterId = try checkSession(request: request, response: response)
             _ = try request.read(into: &data)
             let json = JSON(data: data).dictionaryObject ?? [:]
-            guard let shelterid = json[AnimalJSON.shelterid] as? Int else {
-                throw ResultCode.AuthorizationError
-            }
-            if sessShelterid != shelterid {
-                throw ResultCode.AuthorizationError
-            }
-            let id = try backend.edit(withDictionary: json)
+
+            let id = try backend.edit(withDictionary: json, withShelterId: sessShelterId)
             try response.status(.OK).send(json: JSON(["id" : id])).end()
         } catch (let error) {
             Log.error(error.localizedDescription)
@@ -111,13 +106,13 @@ public class AnimalController: SessionCheckable {
             let sessShelterid = try checkSession(request: request, response: response)
             _ = try request.read(into: &data)
             let json =  JSON(data: data).dictionaryObject ?? [:]
-            guard let shelterid = json[AnimalJSON.shelterid] as? Int else {
-                throw ResultCode.AuthorizationError
-            }
-            if sessShelterid != shelterid {
-                throw ResultCode.AuthorizationError
-            }
-            let id = try backend.add(withDictionary: json)
+           // guard let shelterid = json[AnimalJSON.shelterid] as? Int else {
+             //   throw ResultCode.AuthorizationError
+            //}
+            //if sessShelterid != shelterid {
+              //  throw ResultCode.AuthorizationError
+            //}
+            let id = try backend.add(withDictionary: json, withShelterId: sessShelterid)
             try response.status(.OK).send(json: JSON(["id" : id])).end()
         } catch (let error) {
             Log.error(error.localizedDescription)

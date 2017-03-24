@@ -109,7 +109,7 @@ public class FilesController {
     private func onUpload(request: RouterRequest, response: RouterResponse, next: () -> Void) {
         var content = Data()
 
-        guard // let filename = request.parameters["filename"],
+        guard
             let animalId = request.queryParameters["animalId"],
             let animalIntId = Int(animalId) else {
                 Log.error("Błąd podczas uploadu pliku")
