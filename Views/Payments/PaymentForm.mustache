@@ -47,7 +47,7 @@
 
 		function getHash(_amount) {
 			$.ajax({
-				url: "http://localhost:8000/payment/payment/hash",
+				url: window.location.protocol+"//"+window.location.host+"/payment/hash",
 				type:"POST",
 				data: JSON.stringify({ amount: _amount, currency: "PLN", transaction_type: "S", description:"TR001" }),
 				contentType: "application/json",

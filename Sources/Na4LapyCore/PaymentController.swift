@@ -29,13 +29,13 @@ public class PaymentController {
     
     private func setup() {
         router.get("/form", handler: onForm)
-        router.get("/finish", handler: onFinish)
+        router.get("/form/finish", handler: onFinish)
         router.post("/hash", handler: onHash)
     }
     
     private func onForm(request: RouterRequest, response: RouterResponse, next: () -> Void) {
         do {
-            try response.render("/Payments/PaymentForm", context: ["merchant_id": "marek.kaluzny", "back_url": "http://api.na4lapy.org/payment/finish"])
+            try response.render("/Payments/PaymentForm", context: ["merchant_id": merchant_id, "back_url": request.originalURL + "/finish"])
         } catch (let error) {
             try! response.status(.internalServerError).send("Error: " + error.localizedDescription).end()
         }
