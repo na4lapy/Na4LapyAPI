@@ -8,12 +8,14 @@
 
 import Foundation
 
+import SwiftyJSON
 import Kitura
 import HeliumLogger
 import LoggerAPI
 import Foundation
 import KituraCORS
 import KituraSession
+import KituraMustache
 import Na4LapyCore
 
 HeliumLogger.use()
@@ -69,13 +71,18 @@ let animalController = AnimalController(backend: animalBackend)
 let filesController = FilesController(path: defaultImagesPath, backend: photoBackend)
 let loginController = SecUserController(db: db)
 let shelterController = ShelterController(backend: shelterBackend)
+let paymentController = PaymentController(merchant_id: "to_change", salt: "to_change")
 
 let mainRouter = Router()
+mainRouter.add(templateEngine: MustacheTemplateEngine())
+mainRouter.setDefault(templateEngine: MustacheTemplateEngine())
+
 mainRouter.get("/") {
     request, response, next in
     next()
 }
 
+mainRouter.all(middleware: BodyParser())
 mainRouter.all("auth", middleware: session)
 mainRouter.all("animals", middleware: session)
 mainRouter.all("files", middleware: session)
@@ -90,7 +97,7 @@ mainRouter.all("animals", middleware: animalController.router)
 mainRouter.all("files", middleware: filesController.router)
 mainRouter.all("auth", middleware: loginController.router)
 mainRouter.all("shelter", middleware: shelterController.router)
-
+mainRouter.all("payment", middleware: paymentController.router)
 //  an HTTP server and connect it to the router
 Kitura.addHTTPServer(onPort: listenPort, with: mainRouter)
 

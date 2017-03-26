@@ -1,0 +1,65 @@
+<html>
+<head>
+    <!--jQuey -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+	<form action="https://secure.paylane.com/order/cart.html" method="post" id="paymentForm">
+		<!-- Form Name -->
+		<legend>Płatność</legend>
+
+		<!-- Amount-->
+		<div class="form-group">
+			<label control-label" for="textinput">Kwota</label>
+			<input id="textinput" name="amount" type="text" placeholder="20" class="form-control input-lg">
+		</div>
+
+		<!-- Submit -->
+		<div class="form-group">
+			<button type="submit" class="btn btn-primary btn-block">Zapłać</button>
+		</div>
+
+		<input type="hidden" name="currency" value="PLN">
+		<input type="hidden" name="merchant_id" value="{{merchant_id}}">
+		<input type="hidden" name="description" value="TR001" />
+		<input type="hidden" name="transaction_description" value="Product 1 transaction" />
+		<input type="hidden" name="transaction_type" value="S">
+		<input type="hidden" name="back_url" value="{{back_url}}">
+		<input type="hidden" name="language" value="pl">
+		<input type="hidden" name="hash" value="to_replace" />
+
+	</form>
+
+	<script type="text/javascript">
+		$("form").submit(function( event ) {
+			var amount = $('input[name=amount]').val();
+
+			if ($('input[name=hash]').val() != "to_replace") {
+				return true
+			}
+
+			getHash(amount)
+			event.preventDefault();
+		});
+
+		function getHash(_amount) {
+			$.ajax({
+				url: window.location.protocol+"//"+window.location.host+"/payment/hash",
+				type:"POST",
+				data: JSON.stringify({ amount: _amount, currency: "PLN", transaction_type: "S", description:"TR001" }),
+				contentType: "application/json",
+				dataType: "json"
+			}).done(function(data) {
+                //replace hidden form filed - hash
+
+				$('input[name=hash]').val(data.hash)
+				$('form').submit()
+			})
+		}
+
+	</script>
+</body>
+</html>
