@@ -71,7 +71,7 @@ public class PaymentController {
     }
     
     private func calculateHash(salt: String, description: String, amount: String, currency: String, transaction_type: String) -> String {
-        let pas: String = String(format: "%@|%@|%@|%@|%@", self.salt, description, amount, currency, transaction_type)
+         let pas: String = "\(self.salt)|\(description)|\(amount)|\(currency)|\(transaction_type)"
         let data = Data(Array(pas.utf8))
         
         return data.sha1().toHexString()
