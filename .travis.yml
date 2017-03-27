@@ -9,11 +9,10 @@ dist: trusty
 osx_image: xcode8.2
 
 script:
-- sudo apt-get install clang libicu-dev  libstdc++6
+- sudo apt-get install clang libicu-dev 
 - wget https://swift.org/builds/swift-3.1-branch/ubuntu1404/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-03-24-a/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-03-24-a-ubuntu14.04.tar.gz
 - wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import -
 - tar -zxvf swift-3.1-DEVELOPMENT-SNAPSHOT-2017-03-24-a-ubuntu14.04.tar.gz
 - export PATH=$PATH:$(pwd)/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-03-24-a-ubuntu14.04/usr/bin
-- echo $PATH
-- swift --version 
+- swift package update
 - swift build
