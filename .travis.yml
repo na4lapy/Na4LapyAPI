@@ -16,6 +16,6 @@ script:
 - gpg --verify swift-3.0.2-RELEASE-ubuntu16.04.tar.gz.sig
 - tar -zxvf swift-3.0.2-RELEASE-ubuntu16.04.tar.gz 
 - echo $PATH
-- export PATH=$PATH:$(pwd)/usr/bin
+- export PATH=$PATH:$(pwd)/swift/usr/bin
 - echo $PATH
 - swift build
