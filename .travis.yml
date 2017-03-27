@@ -1,7 +1,12 @@
-language: objective-c
+language: generic
 
-xcode_project: Na4lapyAPI.xcodeproj
-xcode_scheme: Na4lapyAPI
+os: linux
+
+env: SWIFT_VERSION=3.0
+
+sudo: required
+dist: trusty
+osx_image: xcode8.2
 
 script:
 - swift build
