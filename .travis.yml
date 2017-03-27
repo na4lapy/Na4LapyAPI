@@ -18,4 +18,5 @@ script:
 - echo $PATH
 - export PATH=$PATH:$(pwd)/swift-3.0.2-RELEASE-ubuntu16.04/usr/bin
 - echo $PATH
+- sudo ppa-purge ppa:ubuntu-toolchain-r/test
 - swift build
