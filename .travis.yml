@@ -1,0 +1,7 @@
+language: objective-c
+
+xcode_project: Na4lapyAPI.xcodeproj
+xcode_scheme: Na4lapyAPI
+
+script:
+- swift build
