@@ -9,7 +9,7 @@ dist: trusty
 osx_image: xcode8.2
 
 script:
-- sudo apt-get install clang libicu-dev 
+- sudo apt-get install clang libicu-dev  libstdc++6
 - wget https://swift.org/builds/swift-3.0.2-release/ubuntu1604/swift-3.0.2-RELEASE/swift-3.0.2-RELEASE-ubuntu16.04.tar.gz
 - wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import -
 - gpg --keyserver hkp://pool.sks-keyservers.net --refresh-keys Swift
