@@ -6,9 +6,9 @@ dist: trusty
 
 script:
 - sudo apt-get install clang libicu-dev 
-- wget https://swift.org/builds/swift-3.1-branch/ubuntu1404/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-03-24-a/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-03-24-a-ubuntu14.04.tar.gz
+- wget https://swift.org/builds/swift-3.0.2-release/ubuntu1404/swift-3.0.2-RELEASE/swift-3.0.2-RELEASE-ubuntu14.04.tar.gz
 - wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import -
-- tar -zxvf swift-3.1-DEVELOPMENT-SNAPSHOT-2017-03-24-a-ubuntu14.04.tar.gz
-- export PATH=$PATH:$(pwd)/swift-3.1-DEVELOPMENT-SNAPSHOT-2017-03-24-a-ubuntu14.04/usr/bin
+- tar -zxvf swift-3.0.2-RELEASE-ubuntu14.04.tar.gz
+- export PATH=$PATH:$(pwd)/swift-3.0.2-RELEASE-ubuntu14.04/usr/bin
 - swift package update
 - swift build
