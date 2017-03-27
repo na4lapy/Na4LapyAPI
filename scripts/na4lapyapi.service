@@ -9,8 +9,8 @@ After=network.target postgresql.service
 Type=forking
 # PIDFile=/tmp/na4lapyapi.pid
 User=na4lapy
-ExecStart=/opt/Na4LapyAPI/scripts/n4l.sh start
-ExecStop=/opt/Na4LapyAPI/scripts/n4l.sh stop
-ExecReload=/opt/Na4LapyAPI/scripts/n4l.sh restart
+ExecStart=/etc/init.d/n4l.sh start
+ExecStop=/etc/init.d/n4l.sh stop
+ExecReload=/etc/init.d/n4l.sh restart
 [Install]
 WantedBy=multi-user.target
