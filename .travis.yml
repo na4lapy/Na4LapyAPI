@@ -15,6 +15,5 @@ script:
 - gpg --keyserver hkp://pool.sks-keyservers.net --refresh-keys Swift
 - gpg --verify swift-3.0.2-RELEASE-ubuntu16.04.tar.gz.sig
 - tar -zxvf swift-3.0.2-RELEASE-ubuntu16.04.tar.gz 
-- export PATH=/path/to/usr/bin:"${PATH}"
 
 - swift build
