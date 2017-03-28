@@ -131,7 +131,7 @@ Description: Na4LapyAPI Server
 ```
 
 Standardowa notacja wersji w Debianie wygląda następująco:
-"<project>_<major version>.<minor version>-<package revision>"
+"[project]_[major version].[minor version]-[package revision]"
 
 **Proszę się upewnić, która wersja pakietu pracuje aktualnie w systemie i podbić wersję wg potrzeb**
 Wersję aktualnie zainstalowanego pakietu można sprawdzić przy pomocy:
