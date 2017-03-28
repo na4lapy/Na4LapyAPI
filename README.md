@@ -137,7 +137,7 @@ Standardowa notacja wersji w Debianie wygląda następująco:
 Wersję aktualnie zainstalowanego pakietu można sprawdzić przy pomocy:
 
 ```shell
-$ sudo dpkg -l na4lapyapi
+$ dpkg -l na4lapyapi
 ```
 
 Aby zbudować pakiet należy uruchomić skrypt:
