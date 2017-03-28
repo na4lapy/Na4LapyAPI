@@ -146,8 +146,8 @@ Można się upewnić, że proces z serwerem pracuje.
 
 ```shell
 $ sudo systemctl restart na4lapyapi
-$ ps -ef | grep na4lapy/Server
-na4lapy  15737 15153  0 00:46 pts/3    00:00:00 grep na4lapy/Server
+$ ps -ef | grep Server
+na4lapy  17254     1  0 00:54 ?        00:00:00 /usr/local/na4lapyapi/Server
 ```
 
 Dodatkowo możliwe są operacje zatrzymywania, uruchamiania oraz badania stanu serwera api:
