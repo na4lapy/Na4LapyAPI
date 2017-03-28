@@ -96,11 +96,7 @@ export N4L_API_DATABASE_PASS="___PASS___"
 
 ## Deploy nowej wersji API 
 
-Wszystkie operacje muszą być wykonywane w imieniu użytkownika 'na4lapy'. Z tego powodu, po zalogowaniu jako 'root' należy wykonać polecenie:
-
-```shell
-# su - na4lapy
-```
+Wszystkie operacje muszą być wykonywane w imieniu użytkownika 'na4lapy'.
 
 Kod źródłowy znajduje się w katalogu /opt/Na4LapyAPI/
 Aby pobrać najnowszą wersję należy wykonać polecenie 'git pull', oraz uruchomić testy i kompilację
@@ -112,10 +108,46 @@ $ swift test
 $ swift build
 ```
 
-Po poprawnie wykonanej kompilacji należy wykonać restart serwera api:
+Po poprawnie wykonanej kompilacji należy zmodyfikować numer wersji pakietu w pliku DEBIAN/control
+Kolejnym krokiem jest powrót do katalogu domowego użytkownika 'na4lapy'
+
+```shell
+$ cd
+$ pwd
+/home/na4lapy
+```
+
+Będąc w tym katalogu należy uruchomić skrypt budujący pakiet:
+
+```shell
+$ /opt/Na4LapyAPI/scripts/dpkg-build.sh
+dpkg-deb: building package `na4lapyapi' in `na4lapyapi_0.1-2.deb'.
+```
+
+Pakiet zostanie zbudowany w aktualnym katalogu, w jego nazwie będzie zawarta wersja wpisana w pliku DEBIAN/control
+
+```shell
+$ ls -l na4lapyapi_0.1-2.deb 
+-rw-r--r-- 1 na4lapy na4lapy 1207138 Mar 29 00:40 na4lapyapi_0.1-2.deb
+```
+
+Następnie pakiet należy zainstalować:
+
+```shell
+$ sudo dpkg -i na4lapyapi_0.1-2.deb 
+(Reading database ... 41757 files and directories currently installed.)
+Preparing to unpack na4lapyapi_0.1-2.deb ...
+Unpacking na4lapyapi (0.1-2) over (0.1-1) ...
+Setting up na4lapyapi (0.1-2) ...
+```
+
+Po poprawnej instalacji pakietu proszę zrestartować serwer poleceniem systemctl 
+Można się upewnić, że proces z serwerem pracuje.
 
 ```shell
 $ sudo systemctl restart na4lapyapi
+$ ps -ef | grep na4lapy/Server
+na4lapy  15737 15153  0 00:46 pts/3    00:00:00 grep na4lapy/Server
 ```
 
 Dodatkowo możliwe są operacje zatrzymywania, uruchamiania oraz badania stanu serwera api:
@@ -131,5 +163,4 @@ Logi serwera api dostępne są za pomocą polecenia:
 ```shell
 $ sudo journalctl -fu na4lapyapi
 ```
-
 
