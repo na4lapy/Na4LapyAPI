@@ -15,7 +15,7 @@ export N4L_API_IMAGES_PATH="/home/na4lapy/n4l-photos/1/"
 # Odkomentuj, jeśli aplikacja ma pracować w trybie zgodności ze starym API
 # export N4L_OLDAPI_IMAGES_URL="/opt/"
 
-	/sbin/start-stop-daemon --start --oknodo --user na4lapy --pidfile /tmp/na4lapyapi.pid --startas /opt/Na4LapyAPI/.build/debug/Server -m &
+	/sbin/start-stop-daemon --start --oknodo --user na4lapy --pidfile /tmp/na4lapyapi.pid --startas /usr/local/na4lapyapi/Server -m &
 }
 
 #
