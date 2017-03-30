@@ -1,0 +1,8 @@
+Package: na4lapyapidev
+Version: 0.2-0
+Section: base
+Priority: optional
+Architecture: amd64
+Maintainer: Stowarzyszenie Na4Lapy <kontakt@na4lapy.org>
+Description: Na4LapyAPI Server DEVEL
+ Na4LapyAPI Server DEVEL
