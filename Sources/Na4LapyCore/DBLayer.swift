@@ -346,6 +346,31 @@ public class DBLayer {
     func execute(_ query: String) throws -> [DBEntry]? {
         return try db.execute(query)
     }
+
+    func update(areTermsOfUseAccepted accepted: Bool, forShelterId shelterId: Int) throws -> Int {
+        let termsUpdateCmd = "UPDATE \(Config.secUserTable) SET are_terms_of_use_accepted = $1 WHERE shelter_id = $2 RETURNING SHELTER_ID"
+
+        let termsUpdateResult = try db.execute(termsUpdateCmd, [accepted.makeNode(), shelterId.makeNode()])
+
+        guard !termsUpdateResult.isEmpty, let updatedId = termsUpdateResult.first?["shelter_id"]?.int else {
+            throw SecUserError.badDbParams
+        }
+
+        return updatedId
+    }
+
+    func areTermsOfUseAccepted(forShelterId shelterId: Int) throws -> Bool {
+
+        let areTermsAcceptedCmd = "SELECT are_terms_of_use_accepted from \(Config.secUserTable) where shelter_id = $1"
+
+        let aretTermsAcceptedResult = try db.execute(areTermsAcceptedCmd, [shelterId.makeNode()])
+
+        guard !aretTermsAcceptedResult.isEmpty, let accepted = aretTermsAcceptedResult.first?["are_terms_of_use_accepted"]?.bool else {
+            throw SecUserError.badDbParams
+        }
+
+        return accepted
+    }
     
 
 }
