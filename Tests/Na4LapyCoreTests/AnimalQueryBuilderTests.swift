@@ -21,7 +21,7 @@ class AnimalQueryBuilderTests: XCTestCase {
     var sut: AnimalQueryBuilder!
     override func setUp() {
         super.setUp()
-        sut = AnimalQueryBuilder()
+        sut = AnimalQueryBuilder(params: [:], shelterId: 1)
     }
 
     func testBuilderOptionallyTakesShelterId() {
@@ -102,7 +102,7 @@ class AnimalQueryBuilderTests: XCTestCase {
 
     func testShouldReturnDefaultQueryWithNoParams() {
 
-        let expectedCommand = "select * from \(Config.animaltable);"
+        let expectedCommand = "select * from \(Config.animaltable) where shelter_id = 1;"
 
         let cmd = sut.build()
         XCTAssertEqual(expectedCommand, cmd!)
@@ -130,7 +130,7 @@ class AnimalQueryBuilderTests: XCTestCase {
 
     func testCalculatePrefsCommandShouldReturnCommandWhenThereAreNoBuilderProperties() {
 
-        let expectedCommand = "select * from animal as animal, calculatepreferences(animal, '0','0','0','0','0','0','0','0','0','0',0,0) order by calculatepreferences desc;"
+        let expectedCommand = "select * from animal as animal, calculatepreferences(animal, '0','0','0','0','0','0','0','0','0','0',0,0) where shelter_id = 1 order by calculatepreferences desc;"
 
         sut.calculatePrefs = true
 
@@ -139,7 +139,7 @@ class AnimalQueryBuilderTests: XCTestCase {
 
 
     func testCalculatePrefsCommandShouldReturnCommandWhenParamsAreSet() {
-        let expectedCommand = "select * from animal as animal, calculatepreferences(animal, '1','0','0','0','1','0','0','1','0','0',1,2) order by calculatepreferences desc;"
+        let expectedCommand = "select * from animal as animal, calculatepreferences(animal, '1','0','0','0','1','0','0','1','0','0',1,2) where shelter_id = 1 order by calculatepreferences desc;"
 
         sut.calculatePrefs = true
 
@@ -230,7 +230,7 @@ class AnimalQueryBuilderTests: XCTestCase {
     }
 
     func testBuildBuildsCommandWithNameFiltering(){
-        let expectedCommand = "select * from animal where name ilike 'arn%';"
+        let expectedCommand = "select * from animal where shelter_id = 1 and name ilike 'arn%';"
 
         sut.name = "arn"
         XCTAssertEqual(expectedCommand, sut.build())
