@@ -2,15 +2,14 @@
 # =======================
 #
 [Unit]
-Description=Na4Lapy API Swift
+Description=Na4Lapy API DEVEL
 After=network.target postgresql.service
 
 [Service]
 Type=forking
-# PIDFile=/tmp/na4lapyapi.pid
 User=na4lapy
-ExecStart=/etc/init.d/n4l.sh start
-ExecStop=/etc/init.d/n4l.sh stop
-ExecReload=/etc/init.d/n4l.sh restart
+ExecStart=/etc/init.d/n4l-dev.sh start
+ExecStop=/etc/init.d/n4l-dev.sh stop
+ExecReload=/etc/init.d/n4l-dev.sh restart
 [Install]
 WantedBy=multi-user.target
