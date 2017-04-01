@@ -33,9 +33,6 @@ class AnimalQueryBuilder {
         self.shelterId = shelterId
     }
 
-    init() {
-
-    }
 //
     func build() -> String? {
         var dbCommand = "select * from \(Config.animaltable)"

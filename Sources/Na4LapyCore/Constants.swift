@@ -124,6 +124,7 @@ struct AnimalJSON {
     static let name = "name"
     static let id = "id"
     static let shelterid = "shelterid"
+    static let shelterName = "shelterName"
     static let race = "race"
     static let description = "description"
     static let birthDate = "birthdate"

@@ -13,7 +13,7 @@ import PostgreSQL
 struct Shelter {
     //TODO: Obsługa statusu active?
     private(set) var id: Int
-    private var name: String
+    var name: String
     private var street: String?
     private var buildingNumber: Int?
     private var city: String?

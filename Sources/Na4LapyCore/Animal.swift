@@ -11,7 +11,7 @@ import Foundation
 import PostgreSQL
 
 struct Animal {
-    private var shelterId: Int
+    var shelterId: Int
     private(set) var id: Int
     private var name: String
     private var race: String?
@@ -29,6 +29,7 @@ struct Animal {
     private var animalstatus: AnimalStatus?
     private var status: Status?
     private var calculatedPreferences: Double?
+    var shelterName: String?
     
     init?(withJSON json: JSONDictionary, withShelterId shelterId: Int) {
         guard
@@ -132,10 +133,12 @@ struct Animal {
         let vacc = self.vaccination?.rawValue ?? ""
         let stat1 = self.animalstatus?.rawValue ?? ""
         let stat2 = self.status?.rawValue ?? ""
+        let shelterName = self.shelterName ?? ""
         
         var dict: JSONDictionary =
             [AnimalJSON.id : self.id,
              AnimalJSON.shelterid : self.shelterId,
+             AnimalJSON.shelterName : shelterName,
              AnimalJSON.name : self.name,
              AnimalJSON.race : race,
              AnimalJSON.description : desc,

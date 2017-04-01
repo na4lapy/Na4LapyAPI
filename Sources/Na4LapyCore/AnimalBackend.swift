@@ -63,15 +63,18 @@ public class AnimalBackend {
 
         let photo = PhotoBackend(db: db)
         var animals: [JSONDictionary] = []
-//
+        let shelter = ShelterBackend(db: db)
 //        // TODO: metody pobierania danych z bazy być może powinny pracować na innym wątku,
 //        // TODO: wymaga to zastosowania zabezpieczeń, choćby DispatchGroup
 
         for entry in dbResult {
-            guard let animal = Animal(dictionary: entry) else {
+            guard var animal = Animal(dictionary: entry) else {
                 throw ResultCode.AnimalBackendBadParameters
             }
             let photoresult = try photo.get(byId: animal.id)
+            let shelterDictionary = try shelter.get(byId: animal.shelterId)
+            let shelterName = Shelter(withJSON: shelterDictionary)?.name
+            animal.shelterName = shelterName
             var outputanimal = animal.dictionaryRepresentation()
             outputanimal[AnimalJSON.photos] = photoresult[AnimalJSON.photos]
             animals.append(outputanimal)
@@ -93,11 +96,16 @@ public class AnimalBackend {
         if dbresult.count > 1 {
             throw ResultCode.AnimalBackendTooManyEntries
         }
-        guard let animal = Animal(dictionary: dbresult.first!) else {
+        guard var animal = Animal(dictionary: dbresult.first!) else {
             throw ResultCode.AnimalBackendBadParameters
         }
         let photo = PhotoBackend(db: db)
         let photoresult = try photo.get(byId: animal.id)
+        let shelter = ShelterBackend(db: db)
+        let shelterDictionary = try shelter.get(byId: animal.shelterId)
+        let shelterName = Shelter(withJSON: shelterDictionary)?.name
+        animal.shelterName = shelterName
+
         var outputjson: JSONDictionary = animal.dictionaryRepresentation()
         outputjson[AnimalJSON.photos] = photoresult[AnimalJSON.photos]
         return outputjson
