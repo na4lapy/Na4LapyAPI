@@ -151,3 +151,44 @@ paths:
       responses:
         200:
           description: OK
+          
+  /payment/hash/:
+    post:
+      description: |
+        Endpoint służy do wyliczenia wartości hash wymaganej przez PayLane. Szczegóły w dokumentacji PayLane - secure form 
+      parameters:
+        -
+          name: amount
+          in: json
+          description: Wysokość wpłaty
+          required: true
+          type: number
+          format: int
+        -
+          name: currency
+          in: json
+          description: Waluta. Domyślnie - PLN
+          required: true
+          type: string
+        -
+          name: transaction_type
+          in: json
+          description: Typ transakcji zgodnie z dokumentacją PayLane 'S'
+          required: true
+          type: string
+        -
+          name: description
+          description: Opis transakcji. Nie ma zbyt dużego znaczenia ale jest używany przy wyliczaniu hash'a
+          required: true
+          type: string
+          
+  /payment/form/:
+    get:
+      description: |
+        Endpoint służy do inicjalizacji płatności. Zwraca stronę html która powinna być wyświetlona w przeglądarce. 
+      responses:
+        200:
+          description: OK
+        
+
+
