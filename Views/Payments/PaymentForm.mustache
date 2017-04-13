@@ -29,8 +29,8 @@
 
 		<input type="hidden" name="currency" value="PLN">
 		<input type="hidden" name="merchant_id" value="{{merchant_id}}">
-		<input type="hidden" name="description" value="Przelew dla schroniska Promyk z aplikacji na4lapy." />
-		<input type="hidden" name="transaction_description" value="Przelew" />
+		<input type="hidden" name="description" value="Promyk01" />
+		<input type="hidden" name="transaction_description" value="Przelew dla schroniska Promyk z aplikacji na4lapy." />
 		<input type="hidden" name="transaction_type" value="S">
 		<input type="hidden" name="back_url" value="{{back_url}}">
 		<input type="hidden" name="language" value="pl">
@@ -42,20 +42,21 @@
 	<script type="text/javascript">
 		$("form").submit(function( event ) {
 			var amount = $('input[name=amount]').val();
+            var description = $('input[name=description]').val();
 
 			if ($('input[name=hash]').val() != "to_replace") {
 				return true
 			}
 
-			getHash(amount)
+			getHash(amount, description)
 			event.preventDefault();
 		});
 
-		function getHash(_amount) {
+		function getHash(_amount, _description) {
 			$.ajax({
 				url: window.location.protocol+"//"+window.location.host+"/payment/hash",
 				type:"POST",
-				data: JSON.stringify({ amount: _amount, currency: "PLN", transaction_type: "S", description:"TR001" }),
+				data: JSON.stringify({ amount: _amount, currency: "PLN", transaction_type: "S", description: _description }),
 				contentType: "application/json",
 				dataType: "json"
 			}).done(function(data) {
