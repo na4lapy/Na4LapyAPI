@@ -32,6 +32,11 @@ public class ShelterBackend {
 
         return shelter.dictionaryRepresentation()
     }
+    
+    func getShelter(byId id: Int) throws -> Shelter? {
+        let dbEntry = try get(byId: id)
+        return Shelter(withJSON: dbEntry)
+    }
 
     public func edit(withDictionary dictionary: JSONDictionary) throws -> Int {
         guard let shelter = Shelter(withJSON: dictionary) else {
