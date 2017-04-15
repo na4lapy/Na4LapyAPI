@@ -42,7 +42,7 @@ class AnimalQueryBuilder {
             dbCommand += " \(calculatePrefsCommand())"
             dbCommand += shelterId.map {id in return " where \(AnimalDBKey.shelterId) = \(id)"} ?? ""
             if self.shelterId == nil {
-                dbCommand += " WHERE animal_status = \(AnimalStatus.forAdoption) AND status = \(Status.active)"
+                dbCommand += " WHERE animal_status = '\(AnimalStatus.forAdoption)' AND status = '\(Status.active)'"
             }
             dbCommand += " order by calculatepreferences desc"
         } else {
@@ -67,7 +67,7 @@ class AnimalQueryBuilder {
         }
         
         if self.shelterId == nil {
-            dbCommand += " WHERE animal_status = \(AnimalStatus.forAdoption) AND status = \(Status.active)"
+            dbCommand += " WHERE animal_status = '\(AnimalStatus.forAdoption)' AND status = '\(Status.active)'"
         }
 
         //TODO: Throw when size and page makes no sense
