@@ -74,7 +74,7 @@ let animalController = AnimalController(backend: animalBackend)
 let filesController = FilesController(path: defaultImagesPath, backend: photoBackend)
 let loginController = SecUserController(db: db)
 let shelterController = ShelterController(backend: shelterBackend)
-let paymentController = PaymentController(merchant_id: "to_change", salt: "to_change")
+let paymentController = PaymentController(shelterBackend: shelterBackend)
 
 let mainRouter = Router()
 mainRouter.add(templateEngine: MustacheTemplateEngine())

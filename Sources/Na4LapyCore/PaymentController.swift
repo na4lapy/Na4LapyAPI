@@ -13,13 +13,12 @@ import LoggerAPI
 
 public class PaymentController {
     public let router = Router()
-    private let salt: String
-    private let merchant_id: String
+    private let shelterBackend: ShelterBackend
+    private let merchant_id = "marek.kaluzny" //this should be retrieved from shelterDB
+    private let salt = "la4cle6c" //this should be retrieved from shelterDB
     
-    public init(merchant_id: String, salt: String) {
-        self.merchant_id = merchant_id
-        self.salt = salt
-        
+    public init(shelterBackend: ShelterBackend) {
+        self.shelterBackend = shelterBackend
         setup()
     }
     
@@ -28,14 +27,20 @@ public class PaymentController {
     //
     
     private func setup() {
-        router.get("/form", handler: onForm)
-        router.get("/form/finish", handler: onFinish)
+        router.get("/form/shelter/:id", handler: onFormForShelter)
+        router.get("/form/shelter/:id/finish", handler: onFinish)
         router.post("/hash", handler: onHash)
     }
-    
-    private func onForm(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+
+    private func onFormForShelter(request: RouterRequest, response: RouterResponse, next: () -> Void) {
         do {
-            try response.render("/Payments/PaymentForm", context: ["merchant_id": merchant_id, "back_url": request.originalURL + "/finish"])
+            if let id = request.parameters["id"],
+                let shelterId = Int(id),
+                let shelter: Shelter = try shelterBackend.getShelter(byId: shelterId) {
+                try response.render("Payments/PaymentForm", context: ["merchant_id": merchant_id, "back_url": request.originalURL + "/finish", "shelterName": shelter.name])
+            } else {
+                try! response.status(.internalServerError).send("Error: " + "Unable to get shelter details").end()
+            }
         } catch (let error) {
             try! response.status(.internalServerError).send("Error: " + error.localizedDescription).end()
         }
@@ -43,7 +48,7 @@ public class PaymentController {
     
     private func onFinish(request: RouterRequest, response: RouterResponse, next: () -> Void) {
         do {
-            try response.render("/Payments/PaymentFinishForm", context: [:])
+            try response.render("Payments/PaymentFinishForm", context: [:])
         } catch (let error) {
             try! response.status(.internalServerError).send("Error: " + error.localizedDescription).end()
         }
@@ -71,7 +76,7 @@ public class PaymentController {
     }
     
     private func calculateHash(salt: String, description: String, amount: String, currency: String, transaction_type: String) -> String {
-         let pas: String = "\(self.salt)|\(description)|\(amount)|\(currency)|\(transaction_type)"
+        let pas: String = "\(self.salt)|\(description)|\(amount)|\(currency)|\(transaction_type)"
         let data = Data(Array(pas.utf8))
         
         return data.sha1().toHexString()
