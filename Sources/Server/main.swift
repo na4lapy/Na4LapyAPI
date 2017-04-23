@@ -85,7 +85,11 @@ mainRouter.get("/") {
     next()
 }
 
-mainRouter.all(middleware: BodyParser())
+// BodyParser() nie może być ustawiony dla endpointu,
+// w którym odczytujemy dane z body za pomocą request.read
+//
+mainRouter.all("payment", middleware: BodyParser())
+
 mainRouter.all("auth", middleware: session)
 mainRouter.all("animals", middleware: session)
 mainRouter.all("files", middleware: session)
