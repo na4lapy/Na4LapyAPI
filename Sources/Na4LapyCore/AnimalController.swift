@@ -50,10 +50,10 @@ public class AnimalController: SessionCheckable {
             if let ids = json["ids"] as? [Int] {
                 let result = try backend.get(byIds: ids)
                 
-                if let sess = request.session, let shelterid = sess[SecUserDBKey.shelterid].string, let _ = Int(shelterid) {
-                    try response.status(.OK).send(json: JSON(result)).end()
+                // Brak sesji - włączenie cache.
+                if request.session?[SecUserDBKey.shelterid].string == nil {
+                    response.headers.append(ResponseHeader.cacheControl, value: ResponseHeader.cacheControlValue)
                 }
-                response.headers.append(ResponseHeader.cacheControl, value: ResponseHeader.cacheControlValue)
                 try response.status(.OK).send(json: JSON(result)).end()
             } else {
                 throw ResultCode.AnimalBackendNoData
@@ -139,12 +139,10 @@ public class AnimalController: SessionCheckable {
         do {
             let result = try backend.get(byId: intId)
 
-            //no cache control for panel
-            if let sess = request.session, let shelterid = sess[SecUserDBKey.shelterid].string, let _ = Int(shelterid) {
-                try response.status(.OK).send(json: JSON(result)).end()
+            // Brak sesji - włączenie cache.
+            if request.session?[SecUserDBKey.shelterid].string == nil {
+                response.headers.append(ResponseHeader.cacheControl, value: ResponseHeader.cacheControlValue)
             }
-
-            response.headers.append(ResponseHeader.cacheControl, value: ResponseHeader.cacheControlValue)
             try response.status(.OK).send(json: JSON(result)).end()
         } catch (let error) {
             Log.error(error.localizedDescription)
@@ -168,11 +166,10 @@ public class AnimalController: SessionCheckable {
         do {
             let result = try backend.getall(shelterid: shelterid, params: params)
 
-            if let sess = request.session, let shelterid = sess[SecUserDBKey.shelterid].string, let _ = Int(shelterid) {
-                try response.status(.OK).send(json: JSON(result)).end()
-            }
-
-            response.headers.append(ResponseHeader.cacheControl, value: ResponseHeader.cacheControlValue)
+            // Brak sesji - włączenie cache.
+            if request.session?[SecUserDBKey.shelterid].string == nil {
+                response.headers.append(ResponseHeader.cacheControl, value: ResponseHeader.cacheControlValue)
+            }            
             try response.status(.OK).send(json: JSON(result)).end()
         } catch (let error) {
             Log.error(error.localizedDescription)

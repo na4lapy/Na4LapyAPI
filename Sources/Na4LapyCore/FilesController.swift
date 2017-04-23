@@ -153,7 +153,10 @@ public class FilesController {
         // TODO: zadbać aby nazwa pliku nie zawierała ścieżki.
         
         do {
-            response.headers.append(ResponseHeader.cacheControl, value: ResponseHeader.cacheControlValue)
+            // Brak sesji - włączenie cache.
+            if request.session?[SecUserDBKey.shelterid].string == nil {
+                response.headers.append(ResponseHeader.cacheControl, value: ResponseHeader.cacheControlValue)
+            }
             try response.status(.OK).send(fileName: path + id).end()
         } catch {
             Log.error("Błąd podczas pobierania pliku: \(path + id)")
