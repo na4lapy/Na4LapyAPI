@@ -1,0 +1,15 @@
+# Stop dance for na4lapyapi
+# =======================
+#
+[Unit]
+Description=Na4Lapy API DEVEL
+Requires=docker.service
+After=network.target postgresql.service docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker start -a na4lapyapidev 
+ExecStop=/usr/bin/docker stop -t 2 na4lapyapidev
+
+[Install]
+WantedBy=multi-user.target
