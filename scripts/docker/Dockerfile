@@ -1,5 +1,7 @@
-FROM na4lapy/swift:base
+FROM swift:3.1
 MAINTAINER Andrzej Butkiewicz <scoot@wp.pl>
+
+RUN apt-get -q update && apt-get -q install -y postgresql libpq-dev
 
 COPY ./na4lapyapi.deb /
 RUN dpkg -i na4lapyapi.deb
