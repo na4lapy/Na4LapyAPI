@@ -21,7 +21,6 @@ import Na4LapyCore
 HeliumLogger.use()
 
 var dbconfig = DBConfig()
-var animalBackend: AnimalBackend
 let defaultListenPort = 8123
 var defaultImagesPath = ""
 var listenPort: Int = defaultListenPort
@@ -59,17 +58,9 @@ if let apiport = getenv("N4L_API_LISTEN_PORT") {
 
 let db = DBLayer(config: dbconfig)
 
-//if let oldapi = getenv("N4L_OLDAPI_IMAGES_URL") {
-//    Log.info("Uruchomienie w trybie OLD_API, url: \(dbconfig.oldapiUrl)")
-//    animalBackend = AnimalBackend_oldapi(db: db)
-//} else {
-    animalBackend = AnimalBackend(db: db)
-//}
+let animalBackend = AnimalBackend(db: db)
 let photoBackend = PhotoBackend(db: db)
-
-
 let shelterBackend = ShelterBackend(db: db)
-
 let animalController = AnimalController(backend: animalBackend)
 let filesController = FilesController(path: defaultImagesPath, backend: photoBackend)
 let loginController = SecUserController(db: db)
@@ -79,6 +70,7 @@ let paymentController = PaymentController(shelterBackend: shelterBackend)
 let mainRouter = Router()
 mainRouter.add(templateEngine: MustacheTemplateEngine())
 mainRouter.setDefault(templateEngine: MustacheTemplateEngine())
+mainRouter.viewsPath = "/usr/local/na4lapyapi/Views/"
 
 mainRouter.get("/") {
     request, response, next in
